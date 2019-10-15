@@ -1,0 +1,9 @@
+app:
+  env: none
+
+spring:
+  profiles:
+    active: local,prod
+
+server:
+  port: 9000
