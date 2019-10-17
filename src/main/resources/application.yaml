@@ -1,9 +1,9 @@
 app:
   env: none
 
+server:
+  port: 9000
+
 spring:
   profiles:
     active: local,prod
-
-server:
-  port: 9000

@@ -69,5 +69,5 @@ public class User extends Audit {
       cascade = CascadeType.ALL,
       orphanRemoval = true,
       mappedBy = "user")
-  private Set<FileDetails> fileDetails = new HashSet<>();
+  private Set<Asset> fileDetails = new HashSet<>();
 }
