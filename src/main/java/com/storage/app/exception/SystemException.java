@@ -1,18 +1,14 @@
 package com.storage.app.exception;
 
-public class SystemException extends RuntimeException {
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 
+@RequiredArgsConstructor
+@Getter
+public class SystemException extends RuntimeException {
   private static final long serialVersionUID = 140591408707087290L;
 
-  public SystemException(final String message) {
-    super(message);
-  }
-
-  public SystemException(final Throwable t) {
-    super(t);
-  }
-
-  public SystemException(final String message, final Throwable t) {
-    super(message, t);
-  }
+  private final String message;
+  private final HttpStatus httpStatus;
 }
