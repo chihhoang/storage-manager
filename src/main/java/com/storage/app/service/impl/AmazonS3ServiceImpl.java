@@ -10,9 +10,8 @@ import com.storage.app.config.AwsProperties;
 import com.storage.app.exception.SystemException;
 import com.storage.app.model.Asset;
 import com.storage.app.model.User;
-import com.storage.app.repository.AssetRepository;
-import com.storage.app.repository.UserRepository;
 import com.storage.app.service.AmazonS3Service;
+import com.storage.app.service.UserService;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,18 +31,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class AmazonS3ServiceImpl implements AmazonS3Service {
   private final AmazonS3 amazonS3;
   private final AwsProperties awsProperties;
-  private final UserRepository userRepository;
-  private final AssetRepository assetRepository;
+  private final UserService userService;
 
   @Override
   public Asset uploadFile(String fileName, String filePath, String username) {
-    User user =
-        userRepository
-            .findOneByLogin(username)
-            .orElseThrow(
-                () ->
-                    new SystemException(
-                        "Unable to find username " + username, HttpStatus.BAD_REQUEST));
+    User user = userService.getUserByUsername(username);
 
     Path p = Paths.get(filePath);
     String rootFileName = p.getFileName().toString();
@@ -59,16 +51,18 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     String cloudFrontUrl = String.format("%s/%s", awsProperties.getCloudFrontUrl(), fileName);
     String accelerateUrl = String.format("%s/%s", awsProperties.getS3AccelerateUrl(), fileName);
 
-    return assetRepository.save(
-        Asset.builder()
-            .s3Url(s3Url)
-            .cloudFrontUrl(cloudFrontUrl)
-            .accelerationTransferUrl(accelerateUrl)
-            .version(putObjectResult.getVersionId())
-            .user(user)
-            .createdBy(username)
-            .lastModifiedBy(username)
-            .build());
+    return Asset.builder()
+        .fileName(fileName)
+        .s3Url(s3Url)
+        .cloudFrontUrl(cloudFrontUrl)
+        .accelerationTransferUrl(accelerateUrl)
+        .version(putObjectResult.getVersionId())
+        .user(user)
+        .createdBy(username)
+        .lastModifiedBy(username)
+        .firstName(user.getFirstName())
+        .lastName(user.getLastName())
+        .build();
   }
 
   private String resolveFileName(String username, String fileName, String rootFileName) {
@@ -77,13 +71,7 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
 
   @Override
   public Asset uploadFile(String fileName, MultipartFile multipartFile, String username) {
-    User user =
-        userRepository
-            .findOneByLogin(username)
-            .orElseThrow(
-                () ->
-                    new SystemException(
-                        "Unable to find username " + username, HttpStatus.BAD_REQUEST));
+    User user = userService.getUserByUsername(username);
 
     fileName = resolveFileName(username, fileName, multipartFile.getOriginalFilename());
 
@@ -100,17 +88,18 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     String cloudFrontUrl = String.format("%s/%s", awsProperties.getCloudFrontUrl(), fileName);
     String accelerateUrl = String.format("%s/%s", awsProperties.getS3AccelerateUrl(), fileName);
 
-    return assetRepository.save(
-        Asset.builder()
-            .fileName(fileName)
-            .s3Url(s3Url)
-            .cloudFrontUrl(cloudFrontUrl)
-            .accelerationTransferUrl(accelerateUrl)
-            .version(putObjectResult.getVersionId())
-            .user(user)
-            .createdBy(username)
-            .lastModifiedBy(username)
-            .build());
+    return Asset.builder()
+        .fileName(fileName)
+        .s3Url(s3Url)
+        .cloudFrontUrl(cloudFrontUrl)
+        .accelerationTransferUrl(accelerateUrl)
+        .version(putObjectResult.getVersionId())
+        .user(user)
+        .createdBy(username)
+        .lastModifiedBy(username)
+        .firstName(user.getFirstName())
+        .lastName(user.getLastName())
+        .build();
   }
 
   private File convertMultipartToFile(MultipartFile multipartFile) {

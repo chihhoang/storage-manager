@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /** @author choang on 10/24/19 */
 @Service
@@ -22,6 +23,11 @@ public class AssetServiceImpl implements AssetService {
   private final AssetRepository assetRepository;
   private final UserService userService;
   private final AmazonS3Service amazonS3Service;
+
+  @Override
+  public Asset createAsset(String fileName, MultipartFile multipartFile, String username) {
+    return assetRepository.save(amazonS3Service.uploadFile(fileName, multipartFile, username));
+  }
 
   @Override
   public Asset getAsset(long id) {
@@ -49,7 +55,7 @@ public class AssetServiceImpl implements AssetService {
     Asset asset = getAsset(id);
 
     if (user.getRoles().contains(Role.ROLE_ADMIN)) {
-      deleteAsset(id);
+      return deleteAsset(id);
     }
 
     // TODO verify user before delete

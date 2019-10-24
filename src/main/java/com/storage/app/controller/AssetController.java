@@ -3,7 +3,6 @@ package com.storage.app.controller;
 import com.storage.app.Utils;
 import com.storage.app.model.Asset;
 import com.storage.app.security.JwtTokenProvider;
-import com.storage.app.service.AmazonS3Service;
 import com.storage.app.service.AssetService;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -25,19 +24,17 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RequiredArgsConstructor
 public class AssetController {
-  private final AmazonS3Service amazonS3Service;
   private final JwtTokenProvider tokenProvider;
   private final AssetService assetService;
 
   @PostMapping("/upload")
-  public ResponseEntity<Asset> uploadAsset(
+  public ResponseEntity<Asset> createAsset(
       @RequestParam(value = "file") MultipartFile file, HttpServletRequest request) {
     String username = tokenProvider.getUserLogin(tokenProvider.resolveToken(request));
 
     String fileName = Utils.getUUID(7);
 
-    // TODO refactor to AssetService
-    return ResponseEntity.ok(amazonS3Service.uploadFile(fileName, file, username));
+    return ResponseEntity.ok(assetService.createAsset(fileName, file, username));
   }
 
   @GetMapping("/users")
@@ -51,7 +48,7 @@ public class AssetController {
   public ResponseEntity<Asset> deleteAsset(@PathVariable long id, HttpServletRequest request) {
     String username = tokenProvider.getUserLogin(tokenProvider.resolveToken(request));
 
-    // Verify the actual user or admin before delete, pass username to service
+    // TODO Verify the actual user or admin before delete, pass username to service
     assetService.deleteAsset(id);
 
     return ResponseEntity.ok(Asset.builder().id(id).build());
