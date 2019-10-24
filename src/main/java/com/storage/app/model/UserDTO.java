@@ -1,19 +1,21 @@
 package com.storage.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.Instant;
 import java.util.Set;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class UserDTO {
   @NotBlank
   @Size(min = 1, max = 50)
   private String login;
 
-  //  @NotNull
   @Size(min = 4, max = 100)
   private String password;
 
@@ -30,9 +32,9 @@ public class UserDTO {
   @Size(max = 256)
   private String imageUrl;
 
-  private boolean activated = false;
+  private boolean activated;
 
-  private Set<String> authorities;
+  @JsonIgnore private Set<Role> roles;
 
   private String createdBy;
 

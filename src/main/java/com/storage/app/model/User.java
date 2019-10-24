@@ -1,18 +1,17 @@
 package com.storage.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Sets;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -49,19 +48,14 @@ public class User extends Audit {
 
   @NotNull
   @Column(nullable = false)
-  private boolean activated = false;
+  private boolean activated = true;
 
   @Size(max = 256)
   @Column(name = "image_url", length = 256)
   private String imageUrl;
 
-  @JsonIgnore
-  @ManyToMany
-  @JoinTable(
-      name = "user_authority",
-      joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-      inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
-  private Set<Authority> authorities = new HashSet<>();
+  @ElementCollection(fetch = FetchType.EAGER)
+  private Set<Role> roles = Sets.newHashSet(Role.ROLE_USER);
 
   @JsonIgnore
   @OneToMany(

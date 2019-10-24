@@ -25,6 +25,12 @@ public class Asset extends Audit {
   @Column(name = "s3_url", length = 512)
   private String s3Url;
 
+  @Column(name = "cloud_front_url", length = 512)
+  private String cloudFrontUrl;
+
+  @Column(name = "acceleration_url", length = 512)
+  private String accelerationTransferUrl;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
   private User user;

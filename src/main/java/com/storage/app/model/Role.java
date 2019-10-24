@@ -1,8 +1,10 @@
 package com.storage.app.model;
 
-public enum Role {
-  ADMIN("ADMIN"),
-  USER("USER");
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
+  ROLE_ADMIN("ROLE_ADMIN"),
+  ROLE_USER("ROLE_USER");
 
   private final String value;
 
@@ -15,7 +17,7 @@ public enum Role {
   }
 
   @Override
-  public String toString() {
-    return this.value();
+  public String getAuthority() {
+    return name();
   }
 }
