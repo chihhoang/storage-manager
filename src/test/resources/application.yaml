@@ -1,0 +1,23 @@
+app:
+  env: test
+
+spring:
+  profiles:
+    active: test
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
+  datasource:
+    platform: h2
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1
+  username: sa
+  password:
+
+aws:
+  enabled: false
+  region:
+  access-key:
+  secret-key:
+  s3-bucket:
