@@ -48,16 +48,14 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     Path p = Paths.get(filePath);
     String rootFileName = p.getFileName().toString();
 
-    fileName = resolveFileName(fileName, rootFileName);
+    fileName = resolveFileName(username, fileName, rootFileName);
 
     PutObjectResult putObjectResult =
         amazonS3.putObject(
             new PutObjectRequest(awsProperties.getS3Bucket(), fileName, filePath)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
 
-    String s3Url =
-        String.format(
-            "%s/%s/%s", awsProperties.getEndpointUrl(), awsProperties.getS3Bucket(), fileName);
+    String s3Url = String.format("%s/%s", awsProperties.getEndpointUrl(), fileName);
 
     return assetRepository.save(
         Asset.builder()
@@ -69,8 +67,8 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
             .build());
   }
 
-  private String resolveFileName(String fileName, String rootFileName) {
-    return fileName + "-" + rootFileName;
+  private String resolveFileName(String username, String fileName, String rootFileName) {
+    return String.format("%s/%s-%s", username, fileName, rootFileName);
   }
 
   @Override
@@ -83,7 +81,7 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
                     new SystemException(
                         "Unable to find username " + username, HttpStatus.BAD_REQUEST));
 
-    fileName = resolveFileName(fileName, multipartFile.getOriginalFilename());
+    fileName = resolveFileName(username, fileName, multipartFile.getOriginalFilename());
 
     File file = convertMultipartToFile(multipartFile);
 
@@ -94,9 +92,7 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
 
     file.delete();
 
-    String s3Url =
-        String.format(
-            "%s/%s/%s", awsProperties.getEndpointUrl(), awsProperties.getS3Bucket(), fileName);
+    String s3Url = String.format("%s/%s", awsProperties.getEndpointUrl(), fileName);
 
     return assetRepository.save(
         Asset.builder()

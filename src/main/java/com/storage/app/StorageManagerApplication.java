@@ -3,6 +3,7 @@ package com.storage.app;
 import com.google.common.collect.Sets;
 import com.storage.app.model.Role;
 import com.storage.app.model.UserDTO;
+import com.storage.app.repository.UserRepository;
 import com.storage.app.service.UserService;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public class StorageManagerApplication {
   private String env;
 
   @Resource private UserService userService;
+  @Resource private UserRepository userRepository;
 
   public static void main(String[] args) {
     SpringApplication.run(StorageManagerApplication.class, args);
@@ -38,14 +40,16 @@ public class StorageManagerApplication {
               .password("admin")
               .email("chhoang102@gmail.com")
               .activated(true)
-              .createdBy(Role.ROLE_ADMIN.value())
+              .createdBy("admin")
               .firstName("Chi")
               .lastName("Hoang")
               .imageUrl("http://example.com")
               .roles(Sets.newHashSet(Role.ROLE_ADMIN, Role.ROLE_USER))
               .build();
 
-      userService.createUser(admin);
+      if (!userRepository.findOneByLogin("admin").isPresent()) {
+        userService.createUser(admin);
+      }
     };
   }
 }
