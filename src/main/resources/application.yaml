@@ -11,3 +11,17 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 11MB
+
+security:
+  jwt:
+    expire-milliseconds: 3600000 # an hour
+#    expire-milliseconds: 31622400 # a year
+
+aws:
+  region: us-west-2
+  access-key: <access key>
+  secret-key: <access secret>
+  s3-bucket: <bucket name>
+  s3-url: https://${aws.s3-bucket}.s3-${aws.region}.amazonaws.com
+  s3-accelerate-url: https://${aws.s3-bucket}.s3-accelerate.amazonaws.com
+  cloud-front-url: <Cloud Front base URL>
