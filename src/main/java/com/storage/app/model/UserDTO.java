@@ -1,6 +1,5 @@
 package com.storage.app.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.Instant;
 import java.util.Set;
 import javax.validation.constraints.Email;
@@ -34,7 +33,7 @@ public class UserDTO {
 
   private boolean activated;
 
-  @JsonIgnore private Set<Role> roles;
+  private Set<Role> roles;
 
   private String createdBy;
 
