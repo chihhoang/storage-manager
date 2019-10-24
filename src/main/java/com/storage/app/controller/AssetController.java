@@ -36,6 +36,7 @@ public class AssetController {
 
     String fileName = Utils.getUUID(7);
 
+    // TODO refactor to AssetService
     return ResponseEntity.ok(amazonS3Service.uploadFile(fileName, file, username));
   }
 
