@@ -28,6 +28,8 @@ public class Asset extends Audit {
 
   private String fileName;
   private String version;
+  private String firstName;
+  private String lastName;
 
   @Column(name = "description", length = 512)
   private String description;
