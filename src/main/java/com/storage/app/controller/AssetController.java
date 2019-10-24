@@ -51,7 +51,7 @@ public class AssetController {
   public ResponseEntity<Asset> deleteAsset(@PathVariable long id, HttpServletRequest request) {
     String username = tokenProvider.getUserLogin(tokenProvider.resolveToken(request));
 
-    // Verify the actual user or admin before delete, pass username
+    // Verify the actual user or admin before delete, pass username to service
     assetService.deleteAsset(id);
 
     return ResponseEntity.ok(Asset.builder().id(id).build());
