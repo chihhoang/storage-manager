@@ -17,5 +17,7 @@ public class AwsProperties {
   private String accessKey;
   private String secretKey;
   private String s3Bucket;
-  private String endpointUrl;
+  private String s3Url;
+  private String cloudFrontUrl;
+  private String s3AccelerateUrl;
 }

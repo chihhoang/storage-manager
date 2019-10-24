@@ -55,11 +55,15 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
             new PutObjectRequest(awsProperties.getS3Bucket(), fileName, filePath)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
 
-    String s3Url = String.format("%s/%s", awsProperties.getEndpointUrl(), fileName);
+    String s3Url = String.format("%s/%s", awsProperties.getS3Url(), fileName);
+    String cloudFrontUrl = String.format("%s/%s", awsProperties.getCloudFrontUrl(), fileName);
+    String accelerateUrl = String.format("%s/%s", awsProperties.getS3AccelerateUrl(), fileName);
 
     return assetRepository.save(
         Asset.builder()
             .s3Url(s3Url)
+            .cloudFrontUrl(cloudFrontUrl)
+            .accelerationTransferUrl(accelerateUrl)
             .version(putObjectResult.getVersionId())
             .user(user)
             .createdBy(username)
@@ -92,12 +96,16 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
 
     file.delete();
 
-    String s3Url = String.format("%s/%s", awsProperties.getEndpointUrl(), fileName);
+    String s3Url = String.format("%s/%s", awsProperties.getS3Url(), fileName);
+    String cloudFrontUrl = String.format("%s/%s", awsProperties.getCloudFrontUrl(), fileName);
+    String accelerateUrl = String.format("%s/%s", awsProperties.getS3AccelerateUrl(), fileName);
 
     return assetRepository.save(
         Asset.builder()
             .fileName(fileName)
             .s3Url(s3Url)
+            .cloudFrontUrl(cloudFrontUrl)
+            .accelerationTransferUrl(accelerateUrl)
             .version(putObjectResult.getVersionId())
             .user(user)
             .createdBy(username)
