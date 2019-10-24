@@ -13,6 +13,8 @@ public interface UserService {
 
   User getUserById(long id);
 
+  User getUserByUsername(String username);
+
   User whoami(HttpServletRequest request);
 
   User updateUser(Login login);

@@ -54,6 +54,15 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public User getUserByUsername(String username) {
+    return userRepository
+        .findOneByLogin(username)
+        .orElseThrow(
+            () ->
+                new SystemException("Unable to find username " + username, HttpStatus.BAD_REQUEST));
+  }
+
+  @Override
   public User whoami(HttpServletRequest request) {
     String username = tokenProvider.getUserLogin(tokenProvider.resolveToken(request));
 
