@@ -20,6 +20,8 @@
     <spring-cloud.version>Greenwich.SR3</spring-cloud.version>
     <swagger.version>3.0.0-SNAPSHOT</swagger.version>
     <org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
+    <guava.version>28.1-jre</guava.version>
+    <jwt.version>0.9.0</jwt.version>
     <org.projectlombok.version>1.18.6</org.projectlombok.version>
   </properties>
 
@@ -32,10 +34,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
-    <!--    <dependency>-->
-    <!--      <groupId>org.springframework.boot</groupId>-->
-    <!--      <artifactId>spring-boot-starter-data-rest</artifactId>-->
-    <!--    </dependency>-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
@@ -102,6 +100,20 @@
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct</artifactId>
       <version>${org.mapstruct.version}</version>
+    </dependency>
+
+    <!-- Guava -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
+    </dependency>
+
+    <!--    JWT-->
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
+      <version>${jwt.version}</version>
     </dependency>
 
   </dependencies>
