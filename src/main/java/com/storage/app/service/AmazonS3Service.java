@@ -12,5 +12,7 @@ public interface AmazonS3Service {
 
   Asset downloadFile(String fileName);
 
+  Asset deleteFile(String fileName);
+
   List<Asset> listFiles(String username);
 }
