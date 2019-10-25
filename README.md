@@ -11,3 +11,5 @@ Or simply with Maven wrapper
 
 Explore and test available APIs via Swagger documentation  
 http://localhost:9000/swagger-ui.html
+
+## Test Jenkins
