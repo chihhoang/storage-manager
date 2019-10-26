@@ -70,11 +70,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   public void configure(WebSecurity web) {
     web.ignoring()
         .antMatchers(HttpMethod.OPTIONS, "/**")
-        .antMatchers("/app/**/*.{js,html}")
-        .antMatchers("/i18n/**")
-        .antMatchers("/content/**")
         .antMatchers("/h2-console/**")
-        .antMatchers("/swagger-ui/index.html")
+        .antMatchers("/v2/api-docs")
+        .antMatchers("/configuration/**")
+        .antMatchers("/webjars/**")
+        .antMatchers("/public")
+        .antMatchers("/swagger-resources/**")
+        .antMatchers("/swagger-ui.html")
         .antMatchers("/test/**");
   }
 }
