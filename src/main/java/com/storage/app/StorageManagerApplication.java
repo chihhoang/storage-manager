@@ -13,9 +13,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
-@CrossOrigin
 @Slf4j
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class StorageManagerApplication {
@@ -34,20 +32,20 @@ public class StorageManagerApplication {
     return args -> {
       log.info("========== Starting app... in {} env", env);
 
-      UserDTO admin =
-          UserDTO.builder()
-              .login("admin")
-              .password("admin")
-              .email("chhoang102@gmail.com")
-              .activated(true)
-              .createdBy("admin")
-              .firstName("Chi")
-              .lastName("Hoang")
-              .imageUrl("http://example.com")
-              .roles(Sets.newHashSet(Role.ROLE_ADMIN, Role.ROLE_USER))
-              .build();
+      if (!userRepository.findOneByUsername("admin").isPresent()) {
+        UserDTO admin =
+            UserDTO.builder()
+                .username("admin")
+                .password("admin")
+                .email("chhoang102@gmail.com")
+                .activated(true)
+                .createdBy("admin")
+                .firstName("Chi")
+                .lastName("Hoang")
+                .imageUrl("http://example.com")
+                .roles(Sets.newHashSet(Role.ROLE_ADMIN, Role.ROLE_USER))
+                .build();
 
-      if (!userRepository.findOneByLogin("admin").isPresent()) {
         userService.createUser(admin);
       }
     };

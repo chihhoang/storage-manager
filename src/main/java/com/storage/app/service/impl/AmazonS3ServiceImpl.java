@@ -40,7 +40,9 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     Path p = Paths.get(filePath);
     String rootFileName = p.getFileName().toString();
 
-    fileName = resolveFileName(username, fileName, rootFileName);
+    fileName = String.format("%s-%s", fileName, rootFileName);
+
+    String s3Key = resolveS3Key(username, fileName, rootFileName);
 
     PutObjectResult putObjectResult =
         amazonS3.putObject(
@@ -52,6 +54,7 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     String accelerateUrl = String.format("%s/%s", awsProperties.getS3AccelerateUrl(), fileName);
 
     return Asset.builder()
+        .s3Key(s3Key)
         .fileName(fileName)
         .s3Url(s3Url)
         .cloudFrontUrl(cloudFrontUrl)
@@ -65,7 +68,7 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
         .build();
   }
 
-  private String resolveFileName(String username, String fileName, String rootFileName) {
+  private String resolveS3Key(String username, String fileName, String rootFileName) {
     return String.format("%s/%s-%s", username, fileName, rootFileName);
   }
 
@@ -73,7 +76,9 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
   public Asset uploadFile(String fileName, MultipartFile multipartFile, String username) {
     User user = userService.getUserByUsername(username);
 
-    fileName = resolveFileName(username, fileName, multipartFile.getOriginalFilename());
+    fileName = String.format("%s-%s", fileName, multipartFile.getOriginalFilename());
+
+    String s3Key = resolveS3Key(username, fileName, multipartFile.getOriginalFilename());
 
     File file = convertMultipartToFile(multipartFile);
 
@@ -89,6 +94,7 @@ public class AmazonS3ServiceImpl implements AmazonS3Service {
     String accelerateUrl = String.format("%s/%s", awsProperties.getS3AccelerateUrl(), fileName);
 
     return Asset.builder()
+        .s3Key(s3Key)
         .fileName(fileName)
         .s3Url(s3Url)
         .cloudFrontUrl(cloudFrontUrl)

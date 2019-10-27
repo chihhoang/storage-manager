@@ -13,7 +13,7 @@ import lombok.Data;
 public class UserDTO {
   @NotBlank
   @Size(min = 1, max = 50)
-  private String login;
+  private String username;
 
   @Size(min = 4, max = 100)
   private String password;

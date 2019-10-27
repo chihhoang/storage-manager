@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public User getUserByUsername(String username) {
     return userRepository
-        .findOneByLogin(username)
+        .findOneByUsername(username)
         .orElseThrow(
             () ->
                 new SystemException("Unable to find username " + username, HttpStatus.BAD_REQUEST));
@@ -67,13 +67,13 @@ public class UserServiceImpl implements UserService {
     String username = tokenProvider.getUserLogin(tokenProvider.resolveToken(request));
 
     return userRepository
-        .findOneByLogin(username)
+        .findOneByUsername(username)
         .orElseThrow(() -> new SystemException("User not found", HttpStatus.NOT_FOUND));
   }
 
   @Override
   public User updateUser(Login login) {
-    Optional<User> user = userRepository.findOneByLogin(login.getUsername());
+    Optional<User> user = userRepository.findOneByUsername(login.getUsername());
 
     if (!user.isPresent()) {
       throw new SystemException(

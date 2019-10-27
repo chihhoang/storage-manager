@@ -25,13 +25,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @AllArgsConstructor
 abstract class Audit {
   @CreatedBy
-  @Column(name = "created_by", nullable = false, length = 50, updatable = false)
+  @Column(name = "created_by", length = 50, updatable = false)
   @JsonIgnore
   private String createdBy;
 
   @CreatedDate
   @Column(name = "created_date", updatable = false)
-  @JsonIgnore
   private Instant createdDate = Instant.now();
 
   @LastModifiedBy

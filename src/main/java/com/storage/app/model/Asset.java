@@ -26,6 +26,7 @@ public class Asset extends Audit {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  private String s3Key;
   private String fileName;
   private String version;
   private String firstName;
