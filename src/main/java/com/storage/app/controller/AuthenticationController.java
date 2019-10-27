@@ -38,7 +38,7 @@ public class AuthenticationController {
 
     User user =
         userRepository
-            .findOneByLogin(username)
+            .findOneByUsername(username)
             .orElseThrow(
                 () ->
                     new SystemException(

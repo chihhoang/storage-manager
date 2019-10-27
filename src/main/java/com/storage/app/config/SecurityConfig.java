@@ -3,7 +3,6 @@ package com.storage.app.config;
 import com.storage.app.security.JwtConfigure;
 import com.storage.app.security.JwtTokenProvider;
 import javax.annotation.Resource;
-import org.apache.catalina.filters.CorsFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,7 +17,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +27,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Resource private JwtTokenProvider tokenProvider;
   @Resource private CustomUserDetailsService customUserDetailsService;
+  //  @Resource private CorsFilter corsFilter;
 
   @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
   @Override
@@ -38,20 +40,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     return new BCryptPasswordEncoder();
   }
 
-  @Bean
-  public CorsFilter corsFilter() {
-    return new CorsFilter();
-  }
-
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
   }
 
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurerAdapter() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**");
+      }
+    };
+  }
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable().addFilterBefore(corsFilter(), UsernamePasswordAuthenticationFilter.class);
-
+    http.csrf().disable();
+    //        .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
+    //    http.cors();
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     http.authorizeRequests()
