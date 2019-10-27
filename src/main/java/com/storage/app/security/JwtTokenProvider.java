@@ -54,7 +54,7 @@ public class JwtTokenProvider {
             AUTHORITIES_KEY,
             roles.stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(",")))
         .setIssuedAt(now)
-        .setExpiration(validity)
+        //        .setExpiration(validity)
         .signWith(SignatureAlgorithm.HS512, secret)
         .compact();
   }
