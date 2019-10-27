@@ -31,12 +31,14 @@ public class AssetController {
 
   @PostMapping("/upload")
   public ResponseEntity<Asset> createAsset(
-      @RequestParam(value = "file") MultipartFile file, HttpServletRequest request) {
+      @RequestParam(value = "file") MultipartFile file,
+      @RequestParam String description,
+      HttpServletRequest request) {
     String username = tokenProvider.getUserLogin(tokenProvider.resolveToken(request));
 
     String fileName = Utils.getUUID(7);
 
-    return ResponseEntity.ok(assetService.createAsset(fileName, file, username));
+    return ResponseEntity.ok(assetService.createAsset(fileName, description, file, username));
   }
 
   @GetMapping("/users")

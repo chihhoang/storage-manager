@@ -25,8 +25,12 @@ public class AssetServiceImpl implements AssetService {
   private final AmazonS3Service amazonS3Service;
 
   @Override
-  public Asset createAsset(String fileName, MultipartFile multipartFile, String username) {
-    return assetRepository.save(amazonS3Service.uploadFile(fileName, multipartFile, username));
+  public Asset createAsset(
+      String fileName, String description, MultipartFile multipartFile, String username) {
+    Asset asset = amazonS3Service.uploadFile(fileName, multipartFile, username);
+    asset.setDescription(description);
+
+    return assetRepository.save(asset);
   }
 
   @Override

@@ -6,7 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 /** @author choang on 10/24/19 */
 public interface AssetService {
-  Asset createAsset(String fileName, MultipartFile multipartFile, String username);
+  Asset createAsset(
+      String fileName, String description, MultipartFile multipartFile, String username);
 
   Asset getAsset(long id);
 
