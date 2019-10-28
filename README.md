@@ -12,4 +12,7 @@ Or simply with Maven wrapper
 Explore and test available APIs via Swagger documentation  
 http://localhost:9000/swagger-ui.html
 
+## APIs
+https://www.getpostman.com/collections/4e7d0b0af13dd3c7325f
+
 ## Test Jenkins
