@@ -46,4 +46,6 @@ public class UserDTO {
   private String lastModifiedBy;
 
   private Instant lastModifiedDate;
+
+  private String idToken;
 }

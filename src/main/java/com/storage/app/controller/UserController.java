@@ -1,8 +1,10 @@
 package com.storage.app.controller;
 
+import com.storage.app.mapper.UserMapper;
 import com.storage.app.model.Login;
 import com.storage.app.model.User;
 import com.storage.app.model.UserDTO;
+import com.storage.app.security.JwtTokenProvider;
 import com.storage.app.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   private final UserService userService;
+  private final UserMapper userMapper;
+  private final JwtTokenProvider tokenProvider;
 
   /**
    * Get all users. Only available to ADMIN
@@ -42,8 +46,14 @@ public class UserController {
    *     information.
    */
   @PostMapping("/users/signup")
-  public ResponseEntity<User> registerUser(@Valid @RequestBody UserDTO userDto) {
-    return ResponseEntity.ok(userService.createUser(userDto));
+  public ResponseEntity<UserDTO> registerUser(@Valid @RequestBody UserDTO userDto) {
+    userDto = userMapper.toDtoUser(userService.createUser(userDto));
+
+    String token = tokenProvider.createToken(userDto.getUsername(), userDto.getRoles());
+
+    userDto.setIdToken(token);
+
+    return ResponseEntity.ok(userDto);
   }
 
   @GetMapping(value = "/users/me")
