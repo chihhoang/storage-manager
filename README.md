@@ -1,7 +1,7 @@
 # Storage Manager
 
 A highly available, highly scalable, cost effective 3 tier web application 
-which would be accessible over public internet through `domain-name.com`
+which would be accessible over public internet through http://chihoang.pro
 
 To start the app on local, build and run `StorageManagerApplication` with below VM arg  
 `-Dspring.profiles.active=local`
