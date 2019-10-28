@@ -13,7 +13,9 @@ Explore and test available APIs via Swagger documentation
 http://localhost:9000/swagger-ui.html
 
 ## APIs
-Download (Postman)[https://www.getpostman.com] and import below collection for a list of available APIs
+Download [Postman](https://www.getpostman.com) and import below collection for a list of available APIs  
 https://www.getpostman.com/collections/4e7d0b0af13dd3c7325f
+
+## TODO Backend Auth Architecture
 
 ## Test Jenkins
