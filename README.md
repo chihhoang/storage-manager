@@ -18,3 +18,4 @@ https://www.getpostman.com/collections/4e7d0b0af13dd3c7325f
 
 ## Authorization Flow
 ![Auth Image](./src/main/resources/AuthDiagram.png)
+ 
